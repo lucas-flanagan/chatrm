@@ -31,7 +31,7 @@ func newChat(conn net.Conn, username string, destUsername string) {
 	conn.Write([]byte(username))
 	reader := bufio.NewReader(os.Stdin)
 
-	// Continually read strings from the user, handling any input errors and writing the message to the conneciton
+	// Continually read strings from the user, handling any input errors and writing the message to the connection
 	for {
 		line, err := reader.ReadString('\n')
 		handle(err)
