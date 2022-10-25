@@ -10,13 +10,16 @@ import (
 var chats = make(map[string]net.Conn)
 var outbound = make(map[string]string)
 
+// Send the message over the proper connection based on the username : connection global map.
 func sendMessage(to string, from string, message string, doneSending chan string) {
 	msg := to + "_" + from + "_" + message
 	tmpConn := chats[to]
 	tmpConn.Write([]byte(msg))
 }
 
-// Handles the communication with each client
+// Handles the communication with each client.
+// Messages are parsed for their DESTINATION_SOURCE_MESSAGE content, which is then passed to sendMessage()
+// An initializing message is always received first by the server to assist in populating the map.
 func newClient(con net.Conn, user chan string) {
 	reader := bufio.NewReader(con)
 	data, err := reader.ReadString('\n')
@@ -53,6 +56,8 @@ func handle(err error) {
 	}
 }
 
+// Continually listen on the chatrm port
+// Accept any new connections and handle the client in a separate goroutine
 func listen(host string, port string, terminate chan string) {
 	l, err := net.Listen("tcp", host)
 	handle(err)
@@ -73,6 +78,8 @@ func listen(host string, port string, terminate chan string) {
 	terminate <- "x"
 }
 
+// Main driver function.
+// Obtain user input and open the listener in a separate goroutine.
 func main() {
 	terminate := make(chan string)
 	printBanner()

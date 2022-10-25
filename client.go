@@ -31,7 +31,7 @@ func newChat(conn net.Conn, username string, destUsername string) {
 	conn.Write([]byte(username))
 	reader := bufio.NewReader(os.Stdin)
 
-	// Continually read strings from the user, handling any input errors and writing the mssage to the conneciton
+	// Continually read strings from the user, handling any input errors and writing the message to the conneciton
 	for {
 		line, err := reader.ReadString('\n')
 		handle(err)
@@ -40,6 +40,8 @@ func newChat(conn net.Conn, username string, destUsername string) {
 	}
 }
 
+// In a separate goroutine, listen on the connection to the server for incoming messages.
+// Print the formatted content to the screen.
 func listenForMessage(con net.Conn) {
 	reader := bufio.NewReader(con)
 	for {
@@ -52,6 +54,8 @@ func listenForMessage(con net.Conn) {
 	}
 }
 
+// Main driver function
+// Obtain user input and spawn goroutines
 func main() {
 	printBanner()
 	var server_ip string
