@@ -80,6 +80,5 @@ Message format: DESTINATION_SOURCE_MESSAGE
 Any advise for common problems or issues.
 ```
 If the client setup is not working, ensure that the server is properly configured.
-Once a chat has been established, it must be maintained. You cannot exit smoothly. 
 If any devices involved in the connection fail, then the server will exit. 
 ```
