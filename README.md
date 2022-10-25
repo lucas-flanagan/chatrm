@@ -56,6 +56,24 @@ go run client.go
 ![img](/images/client7.png)
 ![img](/images/client8.png)
 
+# Design Structure
+
+Message format: DESTINATION_SOURCE_MESSAGE
+
+## Server
+* Obtain port via user input
+* Open a goroutine that will continually listen on that port.
+* Accept all incoming connections and associate it with the respective username as provided by the client program. This data is stored in a global map serverside.
+* Open a new goroutine for each user.
+* Within each of these goroutines, continually accept messages and parse their format for the destination, source, and message content. 
+* Call the sendMessage() function which sends that message over the proper channel based on the global username:net.Conn mapping.
+
+## Client
+* Obtain the chatrm server IP and port from the user
+* Dial into the open port and save the connection
+* Spawn a goroutine that will listen on the connection for incoming messages and print them to the screen
+* Quietly advertise the client's username to the server in an initial message. 
+* Continually read strings from the user, handling any input errors and sending the message to the server with format DESTINATION_SOURCE_MESSAGE
 
 ## Help
 
