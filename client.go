@@ -22,13 +22,16 @@ func handle(err error) {
 	}
 }
 
-//
+// Allows user to continually write messages to the connection with the server
 func newChat(conn net.Conn, username string, destUsername string) {
 	rawUsername := username
 	username = username + "_" + listenport + "\n"
+
 	// Advertise the client's username to the server so they can associate it with the session
 	conn.Write([]byte(username))
 	reader := bufio.NewReader(os.Stdin)
+
+	// Continually read strings from the user, handling any input errors and writing the mssage to the conneciton
 	for {
 		line, err := reader.ReadString('\n')
 		handle(err)
